@@ -3,7 +3,6 @@ fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
     .then(data => loadMeal(data.meals))
 
 function loadMeal(meals) {
-    // console.log(meals);
     for (meal of meals) {
         const mealTitle = meal.strMeal;
         const mealId = meal.idMeal;
@@ -61,7 +60,7 @@ function loadDetails(mealId) {
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
-        `
+                    `
         const modalParent = document.getElementById('modalDiv');
         modalParent.innerHTML = '';
         modalParent.appendChild(modalDiv);

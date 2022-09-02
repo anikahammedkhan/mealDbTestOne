@@ -67,3 +67,53 @@ function loadDetails(mealId) {
     }
 }
 
+
+document.getElementById('btn-search').addEventListener('click', function () {
+    const inputField = document.getElementById('input-field');
+    const inputFieldValue = inputField.value;
+    const searchLink = `https://www.themealdb.com/api/json/v1/1/search.php?s=${inputFieldValue}`;
+    fetch(searchLink)
+        .then(res => res.json())
+        .then(data => searchResult(data))
+})
+
+function searchResult(data) {
+    if (data.meals === null) {
+        const noResult = document.createElement('div');
+        noResult.innerHTML = `
+        <h4 class="text-warning">Nothing Found ! Search Again . Thankyou .</h4>
+        `;
+        const noResultParent = document.getElementById('no-results');
+        noResultParent.innerHTML = '';
+        noResultParent.appendChild(noResult);
+        const searchMealParent = document.getElementById('mealDivParent');
+        searchMealParent.innerHTML = '';
+
+    }
+    else {
+        const searchMealTitle = data.meals[0].strMeal;
+        const searchMealId = data.meals[0].idMeal;
+        const searchMealInstarction = data.meals[0].strInstructions.slice(0, 170);
+        const searchMealPhoto = data.meals[0].strMealThumb;
+        const searchMealParent = document.getElementById('mealDivParent');
+        searchMealParent.innerHTML = '';
+        let mealDiv = document.createElement('div');
+        mealDiv.classList.add('col');
+        mealDiv.innerHTML = `
+                    <div class="card h-100">
+                        <img src="${searchMealPhoto}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">${searchMealTitle}</h5>
+                            <p class="card-text">${searchMealInstarction}</p>
+                            <div class="btn btn-primary" onclick="loadDetails(${searchMealId})"  data-bs-toggle="modal" data-bs-target="#exampleModal">See Details</div>
+                        </div>
+                    </div>
+        `
+        searchMealParent.appendChild(mealDiv);
+        const noResultParent = document.getElementById('no-results');
+        noResultParent.innerHTML = '';
+    }
+}
+
+
+
